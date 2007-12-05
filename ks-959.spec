@@ -3,7 +3,6 @@
 
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
-%bcond_without	userspace	# don't build userspace programs
 %bcond_with	verbose		# verbose build (V=1)
 
 #
@@ -13,7 +12,7 @@
 %define		_mod_name	ks959-sir
 Summary:	Kingsun KS-959 IrDA dongle driver for Linux 2.6.x
 Summary(pl.UTF-8):	Sterownik Kingsun KS-959 IrDA  dla Linuxa 2.6.x
-Name:		kernel%{_alt_kernel}-usb-ks959-sir
+Name:		kernel%{_alt_kernel}-usb-%{_mod_name}
 Version:	0.1
 Release:	%{rel}
 Epoch:		0
