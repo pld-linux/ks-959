@@ -71,9 +71,10 @@ obsługiwany jest tylko tryb SIR w prędkościach od 2400 do 57600
 bps. Ten pakiet zawiera moduł jądra Linuksa.
 
 %prep
+%setup -n %{name}
 # prepare makefile:
 # cat > path/to/dir/Makefile << EOF
-cat > ks-959/Makefile << EOF
+cat > Makefile << 'EOF'
 
 obj-m += ks959-sir.o
 
