@@ -91,7 +91,7 @@ EOF
 %build_kernel_modules -m ks959-sir
 
 # modules placed in subdirectory:
-%build_kernel_modules -C ks-959 -m ks959-sir
+%build_kernel_modules -m ks959-sir
 
 
 %endif
