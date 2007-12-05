@@ -72,43 +72,17 @@ bps. Ten pakiet zawiera moduł jądra Linuksa.
 
 %prep
 %setup -n %{name}
-# prepare makefile:
-# cat > path/to/dir/Makefile << EOF
-cat > Makefile << 'EOF'
-
-obj-m += ks959-sir.o
-
-%{?debug:CFLAGS += -DCONFIG_ks959-sir_DEBUG=1}
-EOF
 
 %build
-%if %{with userspace}
-
-
-%endif
-
 %if %{with kernel}
 %build_kernel_modules -m ks959-sir
-
-# modules placed in subdirectory:
-%build_kernel_modules -m ks959-sir
-
-
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with userspace}
-
-
-%endif
-
 %if %{with kernel}
 %install_kernel_modules -m ks959-sir -d kernel/drivers/usb
-
-# to avoid conflict with in-kernel modules, and prepare modprobe config:
-%install_kernel_modules -s current -n ks959-sir -m ks959-sir -d kernel/drivers/usb
 %endif
 
 %clean
@@ -125,10 +99,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 /etc/modprobe.d/%{_kernel_ver}/ks959-sir.conf
 /lib/modules/%{_kernel_ver}/kernel/drivers/usb/*.ko*
-%endif
-
-%if %{with userspace}
-%files
-%defattr(644,root,root,755)
-
 %endif
