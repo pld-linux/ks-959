@@ -108,7 +108,7 @@ rm -rf $RPM_BUILD_ROOT
 %install_kernel_modules -m ks959-sir -d kernel/drivers/usb
 
 # to avoid conflict with in-kernel modules, and prepare modprobe config:
-%install_kernel_modules -s current -n NAME -m ks959-sir -d kernel/drivers/usb
+%install_kernel_modules -s current -n ks959-sir -m ks959-sir -d kernel/drivers/usb
 %endif
 
 %clean
@@ -123,6 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with kernel}
 %files -n kernel%{_alt_kernel}-usb-ks959-sir
 %defattr(644,root,root,755)
+/etc/modprobe.d/%{_kernel_ver}/ks959-sir.conf
 /lib/modules/%{_kernel_ver}/kernel/drivers/usb/*.ko*
 %endif
 
