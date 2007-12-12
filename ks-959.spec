@@ -9,7 +9,7 @@
 %define		mod_name	ks959-sir
 Summary:	Kingsun KS-959 IrDA dongle driver for Linux 2.6.x
 Summary(pl.UTF-8):	Sterownik Kingsun KS-959 IrDA dla Linuksa 2.6.x
-Name:		ks959
+Name:		ks-959
 Version:	0.1
 Release:	%{rel}
 Epoch:		0
