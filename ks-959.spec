@@ -1,24 +1,21 @@
-
+#
 # TODO: finish that stuff
-
+#
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_with	verbose		# verbose build (V=1)
-
-#
-# main package.
 #
 %define		rel	1
-%define		_mod_name	ks959-sir
+%define		mod_name	ks959-sir
 Summary:	Kingsun KS-959 IrDA dongle driver for Linux 2.6.x
-Summary(pl.UTF-8):	Sterownik Kingsun KS-959 IrDA  dla Linuxa 2.6.x
-Name:		kernel%{_alt_kernel}-usb-%{_mod_name}
+Summary(pl.UTF-8):	Sterownik Kingsun KS-959 IrDA dla Linuksa 2.6.x
+Name:		ks959
 Version:	0.1
 Release:	%{rel}
 Epoch:		0
 License:	GPL
-Group:		Kernel
-Source0:	http://palosanto.com/~a_villacis/codeprojects/ks-959.tar.bz2
+Group:		Base/Kernel
+Source0:	http://palosanto.com/~a_villacis/codeprojects/%{name}.tar.bz2
 # Source0-md5:	26d42a148095215fe174e90ce5960cce
 URL:		http://palosanto.com/~a_villacis/codeprojects/kingsun-linux.en.html#ks959
 %if %{with kernel}
@@ -28,35 +25,56 @@ BuildRequires:	rpmbuild(macros) >= 1.379
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Kingsun KS-959 IrDA dongle driver for Linux 2.6.x This dongle is
+Kingsun KS-959 IrDA dongle driver for Linux 2.6.x. This dongle is
 (currently) a SIR-only device, and supports speed from 2400 to 57600
-bps. This package contains Linux module.
+bps.
 
 %description -l pl.UTF-8
-Sterownik Linuksa 2.6.x dla Kingsun KS-959 IrDA. Aktualnie
-obsługiwany jest tylko tryb SIR w prędkościach od 2400 do 57600
-bps. Ten pakiet zawiera moduł jądra Linuksa.
+Sterownik dla Linuksa 2.6.x do dongle'a IrDA Kingsun KS-959. Aktualnie
+obsługiwany jest tylko tryb SIR z prędkościami od 2400 do 57600
+bps.
+
+%package -n kernel%{_alt_kernel}-usb-%{mod_name}
+Summary:	Kingsun KS-959 IrDA dongle driver for Linux 2.6.x
+Summary(pl.UTF-8):	Sterownik Kingsun KS-959 IrDA dla Linuksa 2.6.x
+Release:	%{rel}@%{_kernel_ver_str}
+Group:		Base/Kernel
+Requires(post,postun):	/sbin/depmod
+%if %{with dist_kernel}
+%requires_releq_kernel
+Requires(postun):	%releq_kernel
+%endif
+
+%description -n kernel%{_alt_kernel}-isdn-fcpci
+Kingsun KS-959 IrDA dongle driver for Linux 2.6.x. This dongle is
+(currently) a SIR-only device, and supports speed from 2400 to 57600
+bps.
+
+%description -n kernel%{_alt_kernel}-isdn-fcpci -l pl.UTF-8
+Sterownik dla Linuksa 2.6.x do dongle'a IrDA Kingsun KS-959. Aktualnie
+obsługiwany jest tylko tryb SIR z prędkościami od 2400 do 57600
+bps.
 
 %prep
-%setup -n ks-959
+%setup -n %{name}
 
 %build
-%build_kernel_modules -m %{_mod_name}
+%build_kernel_modules -m %{mod_name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%install_kernel_modules -m %{_mod_name} -d kernel/drivers/usb
+%install_kernel_modules -m %{mod_name} -d kernel/drivers/usb
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
+%post -n kernel%{_alt_kernel}-usb-%{mod_name}
 %depmod %{_kernel_ver}
 
-%postun
+%postun -n kernel%{_alt_kernel}-usb-%{mod_name}
 %depmod %{_kernel_ver}
 
-%files 
+%files -n kernel%{_alt_kernel}-usb-%{mod_name}
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/kernel/drivers/usb/*.ko*
+/lib/modules/%{_kernel_ver}/kernel/drivers/usb/ks959-sir.ko*
